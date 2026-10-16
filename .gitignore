@@ -1,0 +1,16 @@
+# copied from your box by build/fetch-from-box.sh
+sysroot/
+# paired Moonlight test-client identities (credentials for your box)
+gs-client*/
+# build output / test recordings - may contain Amlogic SLA binaries, never commit
+*.tar.gz
+*.ko
+*.so
+*.h264
+*.h265
+*.opus
+*.ts
+*.raw
+*.png
+/out/
+__pycache__/

@@ -1,0 +1,14 @@
+--- vdi.c.orig
++++ vdi.c
+@@ -678,6 +678,11 @@
+ 
+     if (ioctl(vdi->vpu_fd, VDI_IOCTL_SYNC_INSTANCE_PARAM, pvip) < 0)
+     {
++        /* CoreELEC media_modules amvenc_multi has no such ioctl: its vpu_ioctl() default
++           case returns -EFAULT ("No such IOCTL"). The encoder itself is configured by VPU
++           commands, so treat it as non-fatal. */
++        if (errno == EFAULT || errno == ENOTTY || errno == EINVAL)
++            return 0;
+         VLOG(ERR, "[VDI] fail to deliver sync instance param inst_idx=%d\n", (int)pvip->inst_idx);
+         return -1;
+     }

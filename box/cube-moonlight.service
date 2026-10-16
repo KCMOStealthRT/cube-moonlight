@@ -1,0 +1,21 @@
+# cube-moonlight: Moonlight host for the whole Fire TV Cube 3 output.
+# Installed by install.sh to /storage/.config/system.d/; uninstall.sh removes it.
+# No After=kodi.service on purpose: kodi.service is ordered after graphical.target, so with
+# WantedBy=multi-user.target that is an ordering cycle and systemd drops jobs to break it
+# (it can take CoreELEC's own kodi-autostart.service with it). autostart.sh waits for Kodi.
+[Unit]
+Description=cube-moonlight Moonlight host
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/bin/sh /storage/cube-moonlight/autostart.sh
+# SIGTERM = clean VDIN release; a SIGKILL while capturing can leave /dev/video71 stuck
+KillSignal=SIGTERM
+TimeoutStopSec=15
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
